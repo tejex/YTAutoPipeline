@@ -1,24 +1,36 @@
+
 from Scrapers.infoScraper import InfoScraper
+from Generators.scriptGen import ScriptGenerator
 
 
-class YT_Auto_Video:
-    def __init__(self,url,infoScraper) -> None:
+class YouTubeAV:
+    def __init__(self,url) -> None:
         self.infoScraper = InfoScraper(url)
         self.rawInfo = None
         self.script = None
         self.audio = None
-    
+        
+        self.rawInfo = self.infoScraper.getRawText()
+        self.generateScript()
+        
     def generateScript(self):
-        #make call to GPT API 
-
+        if(not self.rawInfo):
+            self.rawInfo = self.infoScraper.getRawText()
+        
+        
+        self.script = ScriptGenerator(self.rawInfo)
+        
+        
+        
+        return self.script
+        
 
 
 
 def main():
     url = "https://www.oca.org/saints/lives/2024/09/17/102642-martyr-theodota-at-nicea"
+    autoYT = YouTubeAV(url)
 
-    scraper = InfoScraper(url)
-    rawText = scraper.getRawText()
 
 
 if __name__ == "__main__":

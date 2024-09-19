@@ -19,11 +19,11 @@ class InfoScraper:
     def getRawText(self):
         if self.info:
             # Remove script and style elements
-            for script_or_style in self.soup(['script', 'style']):
+            for script_or_style in self.info(['script', 'style']):
                 script_or_style.decompose()
             
             # Get text and strip extra whitespaces
-            raw_text = self.soup.get_text(separator=' ')
+            raw_text = self.info.get_text(separator=' ')
             clean_text = ' '.join(raw_text.split())
             return clean_text
         return "Error fetching page"

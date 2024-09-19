@@ -1,20 +1,5 @@
-import os
-import sys
-from openai import OpenAI
 
-class ScriptGenerator:
-    def __init__(self, rawText) -> None:
-        self.rawText = rawText
-        self.script = None
-        self.client = OpenAI(
-            api_key = "sk-zpBQkeeEyFMTbiJI9Z1K0lGjrYmzTWH6XicVu4CtaVT3BlbkFJtc8oLRmjyTk9xpEee3udSF18X2098ljR6JnJ3aPoIA"
-        )
-        
-        self.generateScript()
-    
-    def generateScript(self):
-        
-        prompt = f"""
+prompt = f"""
         You are tasked with generating a script for a YouTube video that tells the story of Martyr Theodota at Nicea. Use the raw text provided below to create a script that focuses solely on the narrative part, intended for audio recording. The script should be engaging, informative, and have a storytelling tone suitable for a 3 to 5-minute video. Please ensure the content is specific to the provided raw text and does not include any scene descriptions or visual elements.
         
         **Raw Text:**
@@ -31,20 +16,3 @@ class ScriptGenerator:
         - Avoid saying thank you for joining us today and dont ask for subscribers or for likes on the video.        
         Thank you.
         """
-        
-        
-        try:
-            response = self.client.chat.completions.create(
-                model="gpt-4",  # You can specify "gpt-4" for the GPT-4 model
-                messages=[{"role": "user", "content": prompt}],
-                max_tokens=2500  # Adjust token limit as per your needs
-            )
-            
-            # Extract the generated script from the response
-            self.script = response.choices[0].message.content.strip()
-            print(self.script)
-            return self.script
-        
-        except Exception as e:
-            print(f"Error generating script: {e}")
-            return None
