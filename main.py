@@ -25,13 +25,9 @@ class YouTubeAV:
         return self.script
         
 
-
-
 def main():
     url = "https://www.oca.org/saints/lives/2024/09/17/102642-martyr-theodota-at-nicea"
     autoYT = YouTubeAV(url)
-
-
 
 if __name__ == "__main__":
     main()
