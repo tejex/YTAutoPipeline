@@ -7,12 +7,6 @@ The **Complete YouTube Automation Pipeline** is an end-to-end automation solutio
 ## Table of Contents
 
 - [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Dependencies](#dependencies)
-- [Configuration](#configuration)
-- [FrontEnd Interface](#frontend-interface)
-- [Troubleshooting](#troubleshooting)
 - [Contributors](#contributors)
 - [License](#license)
 
@@ -21,9 +15,9 @@ The **Complete YouTube Automation Pipeline** is an end-to-end automation solutio
 - **Script Generation**: Automatically generates a script based on the provided link.
 - **Audio File Creation**: Converts the generated script into an audio file using text-to-speech technology.
 - **Web Scraping for Images**: Scrapes the web for images relevant to the content.
-- **Video Assembly**: Combines the audio file and images into a complete video.
-- **YouTube Upload**: Automatically uploads the generated video to a specified YouTube channel.
-- **FrontEnd Dashboard**: Displays the most recent videos and posts from the YouTube channel, along with brief descriptions.
+- **Video Assembly**: Combines the audio file and images into a complete video. (In Progress)
+- **YouTube Upload**: Automatically uploads the generated video to a specified YouTube channel.  (In Progress)
+- **FrontEnd Dashboard**: Displays the most recent videos and posts from the YouTube channel, along with brief descriptions.  (In Progress)
 
 ## Contributors
 
