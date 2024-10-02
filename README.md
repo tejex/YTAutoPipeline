@@ -8,7 +8,6 @@ The **Complete YouTube Automation Pipeline** is an end-to-end automation solutio
 
 - [Features](#features)
 - [Contributors](#contributors)
-- [License](#license)
 
 ## Features
 
@@ -22,7 +21,3 @@ The **Complete YouTube Automation Pipeline** is an end-to-end automation solutio
 ## Contributors
 
 - Bamlak Deju Abera
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
