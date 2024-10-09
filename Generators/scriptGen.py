@@ -7,7 +7,7 @@ class ScriptGenerator:
         self.rawText = rawText
         self.script = None
         self.client = OpenAI(
-            api_key = ""
+            api_key = "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"
         )
         
         self.generateScript()
@@ -33,7 +33,7 @@ class ScriptGenerator:
         
         try:
             response = self.client.chat.completions.create(
-                model="gpt-4",  # You can specify "gpt-4" for the GPT-4 model
+                model="gpt-4o-mini",  # You can specify "gpt-4" for the GPT-4 model
                 messages=[{"role": "user", "content": prompt}],
                 max_tokens=2500  # Adjust token limit as per your needs
             )
@@ -44,5 +44,5 @@ class ScriptGenerator:
             return self.script
         
         except Exception as e:
-            print(f"Error generating script: {e}")
+            print(f"Error generating script: {e.message}")
             return None

@@ -5,12 +5,11 @@ from io import BytesIO
 import hashlib
 
 class ImageScraper:
-    def __init__(self, query, cse_id, api_key):
-        self.query = query
+    def __init__(self, cse_id, api_key):
         self.cse_id = cse_id
         self.api_key = api_key
 
-    def search_images(self, num_images=10):
+    def search_images(self, query,num_images=10):
         image_urls = []
         seen_urls = set()
         url = 'https://www.googleapis.com/customsearch/v1'
@@ -20,7 +19,7 @@ class ImageScraper:
 
         while len(image_urls) < num_images and start_index <= max_results:
             params = {
-                'q': self.query,
+                'q': query,
                 'cx': self.cse_id,
                 'key': self.api_key,
                 'searchType': 'image',

@@ -7,7 +7,7 @@ from elevenlabs.client import ElevenLabs
 class AudioGenerator:
     def __init__(self, script) -> None:
         self.script = script
-        self.client = ElevenLabs(api_key="")
+        self.client = ElevenLabs(api_key="sk_e56e48e9a2aad8e768ec23a8d2961dfc12c4bbb028f2554b")
         self.audio = None
         self.generateAudio()
         

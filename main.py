@@ -1,3 +1,6 @@
+import os
+
+import tkinter as tk
 
 from Scrapers.infoScraper import InfoScraper
 from Generators.scriptGen import ScriptGenerator
@@ -6,8 +9,11 @@ from Scrapers.imageScraper import ImageScraper
 
 class YouTubeAV:
     def __init__(self,url, imagesURL) -> None:
+        self.api_key = os.getenv('API_KEY')
+        self.cse_id = os.getenv('CSE_ID')
         self.infoScraper = InfoScraper(url)
-        # self.imageScraper = ImageScraper(imagesURL)
+        self.imageScraper = ImageScraper(self.cse_id, self.api_key)
+        
         self.rawInfo = None
         self.script = None
         self.audioPath = None
@@ -22,6 +28,7 @@ class YouTubeAV:
         
         scriptGen = ScriptGenerator(self.rawInfo)
         self.script = scriptGen.script    
+        print(self.script)
         self.generateAudio()
         
         return self.script
@@ -34,25 +41,48 @@ class YouTubeAV:
     
         return self.audioPath
 
-    def collectImages(self):
-        images = self.imageScraper.scrape_images()
-        self.imageScraper.downloadImages(images)
+    def collectImages(self, query):
+        scraper = self.imageScraper
+        num_images = 20  # Number of images to download
+        image_urls = scraper.search_images(query,num_images=num_images)
+        scraper.downloadImages(image_urls, save_dir='images')
         
 
 def main():
-    url = "https://www.oca.org/saints/lives/2024/09/17/102642-martyr-theodota-at-nicea"
-    imageURL = "https://www.google.com/search?q=saint+theodota+and+3+sons&sca_esv=2a0623079f1ec93f&sca_upv=1&udm=2&biw=1470&bih=832&sxsrf=ADLYWIKKMnbh6eMaUBg1iyihlVhVkynzUg%3A1727054682127&ei=WsPwZry4B5SiptQPweKY4Ak&ved=0ahUKEwi8zdeG9NeIAxUUkYkEHUExBpwQ4dUDCBA&uact=5&oq=saint+theodota+and+3+sons&gs_lp=Egxnd3Mtd2l6LXNlcnAiGXNhaW50IHRoZW9kb3RhIGFuZCAzIHNvbnNI3RlQ8gFYwxhwAngAkAEAmAFzoAGFBqoBBDExLjG4AQPIAQD4AQGYAgGgAgTCAgcQABiABBgYmAMAiAYBkgcBMaAHnAQ&sclient=gws-wiz-serp"
-    # autoYT = YouTubeAV(url,imageURL)
-    
-    cse_id = ""
-    api_key = ""
+    def on_submit():
+        url = urlEntry.get() 
+        if url:
+            image_url = "https://www.google.com/search?q=saint+theodota+and+3+sons"
+            autoYT = YouTubeAV(url, image_url)
+            autoYT.collectImages("Apostle Mark of the Seventy Icons")
+        else:
+            print("Please enter a valid URL.")
 
-    query = "Peter The Apostle"
-    scraper = ImageScraper(query, cse_id, api_key)
-    num_images = 20  # Number of images to download
-    image_urls = scraper.search_images(num_images=num_images)
-    scraper.downloadImages(image_urls, save_dir='images')
+    # Create the main window
+    window = tk.Tk()
+    window.geometry("1000x320+350+100")
+    window.title("YouTube Automation")
+
+    # Create UI elements
+    urlLabel = tk.Label(window, text="Enter the URL:")
+    urlLabel.pack(pady=10)
     
+    # imageSearchLabel = tk.Label(window, text="Enter the name of the Icon:")
+    # imageSearchLabel.pack(pady=10)
     
+    # imageSearchEntry = tk.Entry(window, width=50)
+    # imageSearchEntry.pack(pady=50)
+
+    urlEntry = tk.Entry(window, width=50)
+    urlEntry.pack(pady=10)
+
+    submit_button = tk.Button(window, text="Submit", command=on_submit)
+    submit_button.pack(pady=10)
+
+    # Start the Tkinter event loop
+    #https://www.oca.org/saints/lives/2024/04/25/101204-apostle-and-evangelist-mark
+    window.mainloop()
+
 if __name__ == "__main__":
     main()
+
