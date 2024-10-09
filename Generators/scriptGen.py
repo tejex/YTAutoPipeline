@@ -7,7 +7,7 @@ class ScriptGenerator:
         self.rawText = rawText
         self.script = None
         self.client = OpenAI(
-            api_key = "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"
+            api_key = "-"
         )
         
         self.generateScript()
