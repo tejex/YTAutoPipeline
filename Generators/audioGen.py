@@ -7,7 +7,7 @@ from elevenlabs.client import ElevenLabs
 class AudioGenerator:
     def __init__(self, script) -> None:
         self.script = script
-        self.client = ElevenLabs(api_key="_")
+        self.client = ElevenLabs(api_key=os.getenv("ELEVEN_LABS_KEY"))
         self.audio = None
         self.generateAudio()
         
@@ -15,10 +15,10 @@ class AudioGenerator:
     def generateAudio(self):
                 
         response = self.client.text_to_speech.convert(
-            voice_id="pNInz6obpgDQGcFmaJgB", # Adam pre-made voice
+            voice_id="pqHfZKP75CvOlQylNhV4", # Adams voice
             output_format="mp3_22050_32",
             text=self.script,
-            model_id="eleven_turbo_v2_5", # use the turbo model for low latency
+            model_id="eleven_turbo_v2", # use the turbo model for low latency
             voice_settings=VoiceSettings(
                 stability=0.0,
                 similarity_boost=1.0,
