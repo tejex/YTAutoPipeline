@@ -5,21 +5,27 @@ import tkinter as tk
 from Scrapers.infoScraper import InfoScraper
 from Generators.scriptGen import ScriptGenerator
 from Generators.audioGen import AudioGenerator
+from Generators.videoGen import VideoGenerator
 from Scrapers.imageScraper import ImageScraper
 
+import google_auth_oauthlib.flow
+import googleapiclient.discovery
+from googleapiclient.http import MediaFileUpload
+
 class YouTubeAV:
-    def __init__(self,url, imagesURL) -> None:
+    def __init__(self,url) -> None:
         self.api_key = os.getenv('API_KEY')
         self.cse_id = os.getenv('CSE_ID')
         self.infoScraper = InfoScraper(url)
         self.imageScraper = ImageScraper(self.cse_id, self.api_key)
+        self.videoGenerator = VideoGenerator()
         
         self.rawInfo = None
         self.script = None
         self.audioPath = None
         
         self.rawInfo = self.infoScraper.getRawText()
-        self.generateScript()
+        # self.generateScript()
 
         
     def generateScript(self):
@@ -29,7 +35,7 @@ class YouTubeAV:
         scriptGen = ScriptGenerator(self.rawInfo)
         self.script = scriptGen.script    
         
-        self.generateAudio()
+        # self.generateAudio()
         
         return self.script
 
@@ -43,18 +49,25 @@ class YouTubeAV:
 
     def collectImages(self, query):
         scraper = self.imageScraper
-        num_images = 2  # Number of images to download
+        num_images = 20  
         image_urls = scraper.search_images(query,num_images=num_images)
         scraper.downloadImages(image_urls, save_dir='images')
-        
+    
+    def generateVideo(self):
+        self.videoGenerator.pieceVideoTogether()
+    
+    def uploadVideo(self,video_file_path, title, description, category_id, tags, privacy_status):
+        pass
 
 def main():
     def on_submit():
-        url = urlEntry.get() 
+        url = urlEntry.get()
+        imageQuery =  imageSearchEntry.get()
         if url:
-            image_url = "https://www.google.com/search?q=saint+theodota+and+3+sons"
-            autoYT = YouTubeAV(url, image_url)
-            autoYT.collectImages("Saint Longinus Icons")
+            autoYT = YouTubeAV(url)
+            autoYT.collectImages(imageQuery)
+            autoYT.generateVideo()
+            autoYT.uploadVideo()
         else:
             print("Please enter a valid URL.")
     window = tk.Tk()

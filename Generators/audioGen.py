@@ -9,6 +9,7 @@ class AudioGenerator:
         self.script = script
         self.client = ElevenLabs(api_key=os.getenv("ELEVEN_LABS_KEY"))
         self.audio = None
+        self.audio_file_counter = 0
         self.generateAudio()
         
     
@@ -27,12 +28,14 @@ class AudioGenerator:
             ),
         )
                     
-        audioFilePath = f"{uuid.uuid4()}.mp3"
+        audioFilePath = f"audio{self.audio_file_counter}.mp3"
 
         with open(audioFilePath, "wb") as f:
             for chunk in response:
                 if chunk:
                     f.write(chunk)
+
+        self.audio_file_counter += 1
                     
         print(f"A new audio file was saved successfully!")
         return audioFilePath
