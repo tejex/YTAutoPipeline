@@ -52,7 +52,7 @@ class VideoGenerator:
             
         slideshow = slideshow.set_audio(audio)
 
-        slideshow.write_videofile(f"slideshow{self.videoCount}.mp4", fps=24,codec="libx264", audio_codec="aac",temp_audiofile="temp-audio.m4a", remove_temp=True,)
+        slideshow.write_videofile(f"slideshow{self.videoCount}.mp4", fps=24, codec="libx264", audio_codec="aac",temp_audiofile="temp-audio.m4a", remove_temp=True,)
         self.videoCount += 1
 
         return

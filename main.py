@@ -1,21 +1,13 @@
 import os
-from os import listdir
-
 import tkinter as tk
-import openai
-
-from PIL import Image
-from openai import OpenAI
-from googleapiclient.http import MediaFileUpload
 
 from Scrapers.infoScraper import InfoScraper
 from Generators.scriptGen import ScriptGenerator
 from Generators.audioGen import AudioGenerator
 from Generators.videoGen import VideoGenerator
 from Scrapers.imageScraper import ImageScraper
+from Uploader.YT_Uploader import YouTubeUploader
 
-import google_auth_oauthlib.flow
-import googleapiclient.discovery
 
 class YouTubeAV:
     def __init__(self,url) -> None:
@@ -24,6 +16,7 @@ class YouTubeAV:
         self.infoScraper = InfoScraper(url)
         self.imageScraper = ImageScraper(self.cse_id, self.api_key)
         self.videoGenerator = VideoGenerator()
+        self.youtubeUploader = YouTubeUploader("clientSecret.json","youtube", "v3", "https://www.googleapis.com/auth/youtube.upload")
         
         self.rawInfo = None
         self.script = None
@@ -49,42 +42,21 @@ class YouTubeAV:
             self.generateScript()
         
         self.audioPath = AudioGenerator(self.script)
-    
+        
         return self.audioPath
 
     def collectImages(self, query):
-        
         #scraping necessary images
         scraper = self.imageScraper
         num_images = 5 
         image_urls = scraper.search_images(query,num_images=num_images)
-        scraper.downloadImages(image_urls, save_dir='images')
-        # #Generating variations using openAI
-        # client = OpenAI(
-        #     api_key = ""
-        # )
-        
-        # newImages = []
-        # imageDir = '/Users/bamlakdeju/Desktop/YTAutoPipeline/images/'
-        # for image in listdir(imageDir):
-        #     if (image.endswith(".png")):
-        #         try:
-        #             response = client.images.create_variation(
-        #                 image=open(imageDir + image, "rb"),
-        #                 n=1,
-        #                 size="1024x1024",
-        #                 )
-        #             image_url = response.data[0].url
-        #             newImages.append(image_url)
-                    
-        #         except openai.OpenAIError as error:
-        #             print(error)
-        # scraper.downloadImages(newImages,save_dir='images')    
+        scraper.downloadImages(image_urls, save_dir='images') 
     
     def generateVideo(self):
         self.videoGenerator.pieceVideoTogether()
     
-    def uploadVideo(self,video_file_path, title, description, category_id, tags, privacy_status):
+    def uploadVideo(self,video_file_path):
+        self.youtubeUploader.upload_video(video_file_path)
         pass
 
 def main():
@@ -93,11 +65,13 @@ def main():
         imageQuery =  imageSearchEntry.get()
         if url:
             autoYT = YouTubeAV(url)
-            autoYT.collectImages(imageQuery)
-            autoYT.generateVideo()
-            autoYT.uploadVideo()
+            # autoYT.collectImages(imageQuery)
+            # autoYT.generateVideo()
+            # autoYT.uploadVideo()
+            autoYT.uploadVideo("/Users/bamlakdeju/Desktop/YTAutoPipeline/slideshow0.mp4")
         else:
             print("Please enter a valid URL.")
+    
     window = tk.Tk()
     
     window.geometry("1000x320+350+100")
